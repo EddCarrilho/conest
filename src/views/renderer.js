@@ -10,3 +10,12 @@ api.hello()
 function sobre() {
     api.openAbout()
 }
+function clientes() {
+    api.openclientes()
+}
+function fornecedores() {
+    api.openfornecedores()
+}
+function produtos() {
+    api.openprodutos()
+}

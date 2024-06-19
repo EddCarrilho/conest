@@ -27,8 +27,8 @@ let about
 const aboutWindow = () => {
       if (!about) {
             about = new BrowserWindow({
-                  width: 360, 
-                  height: 220, 
+                  width: 480, 
+                  height: 340, 
                   icon: './src/public/img/espada_diamante.png',   
                   resizable: false,
                   autoHideMenuBar: true 
@@ -38,6 +38,60 @@ const aboutWindow = () => {
       about.on('closed', () => {
             about = null
       })
+}
+
+let clientes
+
+const clientesWindow = () => {
+  if (!clientes) {
+        clientes = new BrowserWindow({
+              width: 360, 
+              height: 220, 
+              icon: './src/public/img/espada_diamante.png',   
+              resizable: false,
+              autoHideMenuBar: true 
+          })
+  }
+  clientes.loadFile('./src/views/clientes.html')
+  clientes.on('closed', () => {
+        clientes = null
+  })
+}
+
+let fornecedores
+
+const fornecedoresWindow = () => {
+  if (!fornecedores) {
+        fornecedores = new BrowserWindow({
+              width: 360, 
+              height: 220, 
+              icon: './src/public/img/espada_diamante.png',   
+              resizable: false,
+              autoHideMenuBar: true 
+          })
+  }
+  fornecedores.loadFile('./src/views/fornecedores.html')
+  fornecedores.on('closed', () => {
+        fornecedores = null
+  })
+}
+
+let produtos
+
+const produtosWindow = () => {
+  if (!produtos) {
+        produtos = new BrowserWindow({
+              width: 360, 
+              height: 220, 
+              icon: './src/public/img/espada_diamante.png',   
+              resizable: false,
+              autoHideMenuBar: true 
+          })
+  }
+  produtos.loadFile('./src/views/produtos.html')
+  produtos.on('closed', () => {
+        produtos = null
+  })
 }
 
 // iniciar a aplicação
@@ -68,11 +122,51 @@ const menu = [
         label: 'Arquivo',
         submenu: [
           {
+            label: 'Clientes',
+            click: () => clientesWindow()
+          },
+          {
+            label: 'Fornecedores',
+            click: () => fornecedoresWindow()
+          },
+          {
+            label: 'Produtos',
+            click: () => produtosWindow()
+          },
+          {
                 label: 'Sair',
                 click: () => app.quit(),
                 accelerator: 'Alt+F4'
           }
         ]
+    },
+    {
+      label: 'Exibir',
+      submenu: [
+        {
+              label: 'Recarregar',
+              role: 'reload'
+        },
+        {
+              label: 'Ferramentas do desenvolvedor',
+              role: 'toggleDevTools'
+        },
+        {
+              type: 'separator'
+        },
+        {
+              label: 'Aplicar zoom',
+              role: 'zoomIn'
+        },
+        {
+              label: 'Reduzir',
+              role: 'zoomOut'
+        },
+        {
+              label: 'Restaurar o zoom padrão',
+              role: 'resetZoom'
+        }
+      ]
     },
     {
         label: 'Ajuda',
@@ -105,4 +199,13 @@ const statusConexao = async () => {
 
 ipcMain.on('open-about', () => {
     aboutWindow()
+})
+ipcMain.on('open-clientes', () => {
+  clientesWindow()
+})
+ipcMain.on('open-fornecedores', () => {
+  fornecedoresWindow()
+})
+ipcMain.on('open-produtos', () => {
+  produtosWindow()
 })
