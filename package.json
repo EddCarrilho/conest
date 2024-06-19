@@ -1,0 +1,26 @@
+{
+  "name": "conest",
+  "version": "1.0.0",
+  "description": "Sistema de para gestão de estoque",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EddCarrilho/conest.git"
+  },
+  "author": "Eduardo Sewnarine Carrilho",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/EddCarrilho/conest/issues"
+  },
+  "homepage": "https://github.com/EddCarrilho/conest#readme",
+  "devDependencies": {
+    "electron": "^31.0.1"
+  },
+  "dependencies": {
+    "mongoose": "^8.4.1"
+  }
+}
