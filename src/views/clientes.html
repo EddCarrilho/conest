@@ -5,10 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- evitar ataques de Cross Site Scripting (injeção de dados)-->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'">
-
+    <link rel="stylesheet" href="../public/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../public/css/style.css">
     <title>Clientes</title>
 </head>
 <body>
-    
+    <br>
+    <div class="container">
+        <form class="row g-3" id="frmCliente">
+            <!-- Caixa de input usada na pesquisa de um nome de cliente -->
+            <div class="col-md-6">
+                <!-- Cria uma barra de texto -->
+                <input type="text" class="form-control" id="inputSearch" maxlength="30" spellcheck="false">
+            </div>
+
+            <!-- Botão de pesquisa de clientes CRUD Read-->
+            <div class="col-md-4">
+                <button type="button" class="btn btn-dark" id="btnRead">Buscar</button>
+            </div>
+
+            <hr class="border border-primary border-1 opacity-75">
+
+            <!-- id MongoDB ocultar esta linha -->
+            <div class="col-md-6">
+                <!-- Cria uma barra de texto -->
+                <input type="text" class="form-control" id="inputId" placeholder="id">
+                <br>
+            </div>
+
+            <!-- Nome do cliente -->
+            <div class="col-md-8">
+                <label for="inputName" class="form-label">Nome</label>
+                <!-- Cria uma barra de texto -->
+                <input type="text" class="form-control" id="inputName" required maxlength="30" spellcheck="false"> <!-- spellcheck evita correções de texto.-->
+            </div>
+
+            <!-- Telefone do cliente -->
+            <div class="col-md-4">
+                <label for="inputPhone" class="form-label">Telefone</label>
+                <!-- Cria uma barra de texto -->
+                <input type="tel" class="form-control" id="inputPhone" required maxlength="15" spellcheck="false"> <!-- spellcheck evita correções de texto.-->
+            </div>
+
+             <!-- Email do cliente -->
+             <div class="col-md-12">
+                <label for="inputAddress" class="form-label">E-mail</label>
+                <!-- Cria uma barra de texto -->
+                <input type="email" class="form-control" id="inputAddress" maxlength="30" spellcheck="false"> <!-- spellcheck evita correções de texto.-->
+            </div>
+            
+            <!-- Botões -->
+            <div class="col-12">
+                <br>
+                <button type="submit" class="btn btn-success" id="btnCreate">Adicionar</button>
+                <button type="button" class="btn btn-warning" id="btnUpdate">Editar</button>
+                <button type="button" class="btn btn-danger" id="btnDelete">Excluir</button>
+                <button type="reset" class="btn" id="btnReset"></button>
+            </div>
+        </form>
+    </div>
+    <!-- bootstrap -->
+    <script src="../public/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -28,8 +28,8 @@ const aboutWindow = () => {
       const father = BrowserWindow.getFocusedWindow()
       if (!about) {
             about = new BrowserWindow({
-                  width: 500, 
-                  height: 360, 
+                  width: 800, 
+                  height: 600, 
                   icon: './src/public/img/espada_diamante.png',   
                   resizable: false,
                   autoHideMenuBar: true,
@@ -49,8 +49,8 @@ const clientesWindow = () => {
   const father = BrowserWindow.getFocusedWindow()
   if (!clientes) {
         clientes = new BrowserWindow({
-              width: 360, 
-              height: 220, 
+              width: 800, 
+              height: 600, 
               icon: './src/public/img/espada_diamante.png',   
               resizable: false,
               autoHideMenuBar: true,
@@ -70,8 +70,8 @@ const fornecedoresWindow = () => {
   const father = BrowserWindow.getFocusedWindow()
   if (!fornecedores) {
         fornecedores = new BrowserWindow({
-              width: 360, 
-              height: 220, 
+              width: 800, 
+              height: 600, 
               icon: './src/public/img/espada_diamante.png',   
               resizable: false,
               autoHideMenuBar: true,
@@ -91,8 +91,8 @@ const produtosWindow = () => {
   const father = BrowserWindow.getFocusedWindow()
   if (!produtos) {
         produtos = new BrowserWindow({
-              width: 360, 
-              height: 220, 
+              width: 800, 
+              height: 600, 
               icon: './src/public/img/espada_diamante.png',   
               resizable: false,
               autoHideMenuBar: true,
