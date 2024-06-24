@@ -4,6 +4,9 @@ footer {
     width: 100%;
     position: fixed;
     bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 footer p {
@@ -11,6 +14,10 @@ footer p {
     font-weight: 600;
     text-align: center;
     margin: 12px;
+}
+
+footer img {
+    margin-right: 12px;
 }
 
 p img,

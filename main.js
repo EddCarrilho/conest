@@ -25,13 +25,16 @@ const createWindow = () => {
 let about
 
 const aboutWindow = () => {
+      const father = BrowserWindow.getFocusedWindow()
       if (!about) {
             about = new BrowserWindow({
-                  width: 480, 
-                  height: 340, 
+                  width: 500, 
+                  height: 360, 
                   icon: './src/public/img/espada_diamante.png',   
                   resizable: false,
-                  autoHideMenuBar: true 
+                  autoHideMenuBar: true,
+                  parent: father,
+                  modal: true 
               })
       }
       about.loadFile('./src/views/sobre.html')
@@ -43,13 +46,16 @@ const aboutWindow = () => {
 let clientes
 
 const clientesWindow = () => {
+  const father = BrowserWindow.getFocusedWindow()
   if (!clientes) {
         clientes = new BrowserWindow({
               width: 360, 
               height: 220, 
               icon: './src/public/img/espada_diamante.png',   
               resizable: false,
-              autoHideMenuBar: true 
+              autoHideMenuBar: true,
+              parent: father,
+              modal: true  
           })
   }
   clientes.loadFile('./src/views/clientes.html')
@@ -61,13 +67,16 @@ const clientesWindow = () => {
 let fornecedores
 
 const fornecedoresWindow = () => {
+  const father = BrowserWindow.getFocusedWindow()
   if (!fornecedores) {
         fornecedores = new BrowserWindow({
               width: 360, 
               height: 220, 
               icon: './src/public/img/espada_diamante.png',   
               resizable: false,
-              autoHideMenuBar: true 
+              autoHideMenuBar: true,
+              parent: father,
+              modal: true 
           })
   }
   fornecedores.loadFile('./src/views/fornecedores.html')
@@ -79,13 +88,16 @@ const fornecedoresWindow = () => {
 let produtos
 
 const produtosWindow = () => {
+  const father = BrowserWindow.getFocusedWindow()
   if (!produtos) {
         produtos = new BrowserWindow({
               width: 360, 
               height: 220, 
               icon: './src/public/img/espada_diamante.png',   
               resizable: false,
-              autoHideMenuBar: true 
+              autoHideMenuBar: true,
+              parent: father,
+              modal: true 
           })
   }
   produtos.loadFile('./src/views/produtos.html')

@@ -19,3 +19,6 @@ function fornecedores() {
 function produtos() {
     api.openprodutos()
 }
+function ok() {
+    app.quit()
+}
