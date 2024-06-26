@@ -1,5 +1,6 @@
 /* esconder o id do cliente */
-#inputId {
+#inputId,
+#idfornecedor {
     display: none;
 }
 
@@ -10,7 +11,7 @@
     background-image: url('../img/clear.png');
     background-size: cover;
     border: none;
-    margin-left: 30px;
+    margin-left: 10px;
 }
 
 /* Rodapé */

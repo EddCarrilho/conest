@@ -70,8 +70,8 @@ const fornecedoresWindow = () => {
   const father = BrowserWindow.getFocusedWindow()
   if (!fornecedores) {
         fornecedores = new BrowserWindow({
-              width: 800, 
-              height: 600, 
+              width: 1280, 
+              height: 720, 
               icon: './src/public/img/espada_diamante.png',   
               resizable: false,
               autoHideMenuBar: true,
