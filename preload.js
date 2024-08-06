@@ -6,7 +6,11 @@ contextBridge.exposeInMainWorld('api', {
     openAbout: ()=> ipcRenderer.send('open-about'),
     openclientes: ()=> ipcRenderer.send('open-clientes'),
     openfornecedores: ()=> ipcRenderer.send('open-fornecedores'),
-    openprodutos: ()=> ipcRenderer.send('open-produtos')
+    openprodutos: ()=> ipcRenderer.send('open-produtos'),
+    openclientes: () => ipcRenderer.send('open-clientes'),
+    dbMessage: (message) => ipcRenderer.on('db-message', message),
+    newClient: (cliente) => ipcRenderer.send('new-client', cliente),
+    newFornecedor: (fornecedor) => ipcRenderer.send('new-fornecedor', fornecedor)
 })
 
 // status de conexão (verificar se o banco de dados está conectado)
@@ -31,3 +35,8 @@ function obterData() {
 window.addEventListener('DOMContentLoaded', () => {
     const dataAtual = document.getElementById('dataAtual').innerHTML = obterData()
 })
+
+//conexão com o banco de dados
+ipcRenderer.send('db-conect')
+
+// processos

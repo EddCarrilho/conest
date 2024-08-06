@@ -1,9 +1,14 @@
 const { ipcMain } = require('electron')
-const { app, BrowserWindow, Menu } = require('electron/main')
+const { app, BrowserWindow, Menu, dialog} = require('electron/main')
 const path = require('node:path')
 
 // importar o módulo de conexão
-const {conectar, desconectar} = require('./database.js')
+const { dbStatus, desconectar} = require('./database.js')
+
+let dbCon = null
+
+const clienteSchema = require('./src/models/Cliente.js')
+const fornecedorSchema = require('./src/models/Fornecedor.js')
 
 // Janela principal (definir o objeto win como variável pública)
 let win
@@ -55,7 +60,10 @@ const clientesWindow = () => {
               resizable: false,
               autoHideMenuBar: true,
               parent: father,
-              modal: true  
+              modal: true,
+              webPreferences: {
+                preload: path.join(__dirname, 'preload.js')
+              }
           })
   }
   clientes.loadFile('./src/views/clientes.html')
@@ -76,7 +84,10 @@ const fornecedoresWindow = () => {
               resizable: false,
               autoHideMenuBar: true,
               parent: father,
-              modal: true 
+              modal: true,
+              webPreferences: {
+                preload: path.join(__dirname, 'preload.js')
+              }
           })
   }
   fornecedores.loadFile('./src/views/fornecedores.html')
@@ -91,13 +102,16 @@ const produtosWindow = () => {
   const father = BrowserWindow.getFocusedWindow()
   if (!produtos) {
         produtos = new BrowserWindow({
-              width: 800, 
-              height: 600, 
+              width: 1280, 
+              height: 720, 
               icon: './src/public/img/espada_diamante.png',   
               resizable: false,
               autoHideMenuBar: true,
               parent: father,
-              modal: true 
+              modal: true,
+              webPreferences: {
+                preload: path.join(__dirname, 'preload.js')
+              }
           })
   }
   produtos.loadFile('./src/views/produtos.html')
@@ -115,9 +129,15 @@ app.whenReady().then(() => {
         statusConexao()
     })
 
+    ipcMain.on('db-conect', async (event, message) => {
+      dbCon = await dbStatus()
+      console.log(` ${message}`)
+      event.reply('db-message', 'conectado')
+    })
+
     // desconectar do banco ao encerrar a janela
     app.on('before-quit', async () => {
-        await desconectar()
+        await desconectar(dbCon)
     })
 
   createWindow()
@@ -221,3 +241,64 @@ ipcMain.on('open-fornecedores', () => {
 ipcMain.on('open-produtos', () => {
   produtosWindow()
 })
+
+//CRUD Create >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ipcMain.on('new-client', async (event, cliente) => {
+  console.log(cliente) //Teste do passo 2 - slide
+  // Passo 3 (slide): cadastrar o cliente no MongoDB
+  try {
+    const novoCliente = new clienteSchema({
+      nomeCliente: cliente.nomeCli,
+      foneCliente: cliente.foneCli,
+      emailCliente: cliente.emailCli
+    })
+    await novoCliente.save() //save() --moongose
+    dialog.showMessageBox({
+      type: 'info',
+      title: 'Aviso',
+      message: "Cliente cadastrado com sucesso!",
+      buttons: ['OK']
+  })
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+//CRUD Create >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ipcMain.on('new-fornecedor', async (event, fornecedor) => {
+  console.log(fornecedor) 
+  try {
+    const novoFornecedor = new fornecedorSchema({
+      razaoSFornecedor: fornecedor.razaoSFor,
+      CNPJFornecedor: fornecedor.CNPJFor,
+      emailFornecedor: fornecedor.emailFor,
+      foneFornecedor: fornecedor.foneFor,
+      CEPFornecedor: fornecedor.CEPFor,
+      ruaFornecedor: fornecedor.ruaFor,
+      bairroFornecedor: fornecedor.bairroFor,
+      numeroFornecedor: fornecedor.numeroFor,
+      compleFornecedor: fornecedor.compleFor,
+      cidadeFornecedor: fornecedor.cidadeFor,
+      UFFornecedor: fornecedor.UFFor
+    })
+    await novoFornecedor.save() //save() --moongose
+    dialog.showMessageBox({
+      type: 'info',
+      title: 'Aviso',
+      message: "Fornecedor cadastrado com sucesso!",
+      buttons: ['OK']
+  })
+  } catch (error) {
+    console.log(error)
+  }
+})
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+//CRUD Read >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+//CRUD Update >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+//CRUD Delete >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

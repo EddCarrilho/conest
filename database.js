@@ -10,7 +10,7 @@ const mongoose = require('mongoose')
 let url = "mongodb://admin:pti%402018@10.26.45.207:27017/?authSource=admin"
 
 // conectar
-const conectar = async () => {
+const dbStatus = async () => {
     try {
         await mongoose.connect(url)
         console.log("MongoDB conectado")
@@ -30,4 +30,4 @@ const desconectar = async () => {
 }
 
 // exportar os métodos conectar e desconectar
-module.exports = {conectar, desconectar}
+module.exports = {dbStatus, desconectar}

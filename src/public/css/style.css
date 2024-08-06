@@ -42,3 +42,14 @@ button img {
     height: 128px;
 }
 
+/* imagem do produto */
+#imageProduct {
+    border: 1px solid #dfdfdf;
+    border-radius: 5px;
+    width: 260px;
+    height: 260px;
+    padding: 4px;
+    position: fixed;
+    right: 45px;
+    bottom: 15px;
+}

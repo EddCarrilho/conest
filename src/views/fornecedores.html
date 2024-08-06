@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- evitar ataques de Cross Site Scripting (injeção de dados)-->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://viacep.com.br; script-src 'self' 'unsafe-inline'">
     <link rel="stylesheet" href="../public/css/bootstrap.min.css">
     <link rel="stylesheet" href="../public/css/style.css">
     <title>Fornecedores</title>
@@ -75,42 +75,41 @@
                         <input type="tel" class="form-control border-dark" id="inputcomplemento" maxlength="30" spellcheck="false">
                     </div>      
                     <div class="col-md-3">
-                        <label for="inputbairro" class="form-label">Cidade</label>
-                        <input type="tel" class="form-control border-dark" id="inputbairro" required maxlength="30" spellcheck="false">
+                        <label for="inputcidade" class="form-label">Cidade</label>
+                        <input type="tel" class="form-control border-dark" id="inputcidade" required maxlength="30" spellcheck="false">
                     </div>
                     <div class="col-md-1">
-                        <label for="inputbairro" id="uf" class="form-label">UF</label>
+                        <label for="inputuf" class="form-label">UF</label>
                         <div class="btn-group" role="group">
-                            <select id="uf" class="form-select border-dark" required>
+                            <select id="inputuf" class="form-select border-dark" required>
                                 <option selected></option>
-                                <option value="1">AC</option>
-                                <option value="2">AL</option>
-                                <option value="2">AP</option>
-                                <option value="2">AM</option>
-                                <option value="2">BA</option>
-                                <option value="2">CE</option>
-                                <option value="2">DF</option>
-                                <option value="2">ES</option>
-                                <option value="2">GO</option>
-                                <option value="2">MA</option>
-                                <option value="2">MT</option>
-                                <option value="2">MS</option>
-                                <option value="2">MG</option>
-                                <option value="2">PA</option>
-                                <option value="2">PB</option>
-                                <option value="2">PR</option>
-                                <option value="2">PE</option>
-                                <option value="2">PI</option>
-                                <option value="2">RJ</option>
-                                <option value="2">RN</option>
-                                <option value="2">RS</option>
-                                <option value="2">RO</option>
-                                <option value="2">RR</option>
-                                <option value="2">SC</option>
-                                <option value="2">SP</option>
-                                <option value="2">SE</option>
-                                <option value="2">TO</option>
-
+                                <option value="AC">AC</option>
+                                <option value="Al">AL</option>
+                                <option value="AP">AP</option>
+                                <option value="AM">AM</option>
+                                <option value="BA">BA</option>
+                                <option value="CE">CE</option>
+                                <option value="DF">DF</option>
+                                <option value="ES">ES</option>
+                                <option value="GO">GO</option>
+                                <option value="MA">MA</option>
+                                <option value="MT">MT</option>
+                                <option value="MS">MS</option>
+                                <option value="MG">MG</option>
+                                <option value="PA">PA</option>
+                                <option value="PB">PB</option>
+                                <option value="PR">PR</option>
+                                <option value="PE">PE</option>
+                                <option value="PI">PI</option>
+                                <option value="RJ">RJ</option>
+                                <option value="RN">RN</option>
+                                <option value="RS">RS</option>
+                                <option value="RO">RO</option>
+                                <option value="RR">RR</option>
+                                <option value="SC">SC</option>
+                                <option value="SP">SP</option>
+                                <option value="SE">SE</option>
+                                <option value="TO">TO</option>
                             </select>   
                         </div>
                     </div>      
@@ -119,7 +118,7 @@
              <div class="col-12">
                 <br>
                 <button type="submit" class="btn btn-success" id="btnCreate">Adicionar</button>
-                <button type="button" class="btn btn-warning" id="btnUpdate">Editar</button>
+                <button type="submit" class="btn btn-warning" id="btnUpdate">Editar</button>
                 <button type="button" class="btn btn-danger" id="btnDelete">Excluir</button>
                 <button type="reset" class="btn" id="btnReset"></button>
             </div>
@@ -127,6 +126,7 @@
         </form>
     </div>
 
+    <script src="fornecedor.js"></script>
     <script src="../public/js/bootstrap.min.js"></script>
     <script src="../public/js/script.js"></script>
 </body>
