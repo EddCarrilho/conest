@@ -1,5 +1,6 @@
 const {contextBridge, ipcRenderer } = require('electron')
 
+// processos
 contextBridge.exposeInMainWorld('api', {
     verElectron: () => process.versions.electron,
     hello: () => ipcRenderer.send('send-message', "Oi!"),
@@ -10,7 +11,12 @@ contextBridge.exposeInMainWorld('api', {
     openclientes: () => ipcRenderer.send('open-clientes'),
     dbMessage: (message) => ipcRenderer.on('db-message', message),
     newClient: (cliente) => ipcRenderer.send('new-client', cliente),
-    newFornecedor: (fornecedor) => ipcRenderer.send('new-fornecedor', fornecedor)
+    newFornecedor: (fornecedor) => ipcRenderer.send('new-fornecedor', fornecedor),
+    infoSearchDialog: () => ipcRenderer.send('dialog-infoSearchDialog'),
+    focusSearch: (args) => ipcRenderer.on('focus-search', args),
+    searchClient: (nomeCliente) => ipcRenderer.send('search-client', nomeCliente),
+    nameClient: (args) => ipcRenderer.on('name-client', args),
+    clearSearch: (args) => ipcRenderer.on('clear-search', args)
 })
 
 // status de conexão (verificar se o banco de dados está conectado)
@@ -38,5 +44,3 @@ window.addEventListener('DOMContentLoaded', () => {
 
 //conexão com o banco de dados
 ipcRenderer.send('db-conect')
-
-// processos

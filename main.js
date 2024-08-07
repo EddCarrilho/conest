@@ -264,6 +264,17 @@ ipcMain.on('new-client', async (event, cliente) => {
   }
 })
 
+// Caixa de confirmação
+// ipcMain.on('dialog-warning', () => {
+//    dialog.showMessageBox({
+//      type: 'warning',
+//      title: "Atenção",
+//      message: "Confirma a exclusão deste registro?",
+//      buttons: ['Sim', 'Não'],
+//      defaultId: 0
+//    })
+// })
+
 //CRUD Create >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ipcMain.on('new-fornecedor', async (event, fornecedor) => {
   console.log(fornecedor) 
@@ -295,6 +306,48 @@ ipcMain.on('new-fornecedor', async (event, fornecedor) => {
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 //CRUD Read >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// Aviso (Busca: Preenchimento )
+ipcMain.on('dialog-infoSearchDialog', (event) => {
+  dialog.showMessageBox ({
+    type: 'warning',
+    title: 'Atenção!',
+    message: 'Preencha o nome do cliente',
+    buttons: ['OK']
+  })
+  event.reply('focus-search')
+})
+// Recebimento do pedido de busca de um cliente pelo nome (Passo 1)
+ipcMain.on('search-client', async (event, nomeCliente) => {
+  console.log(nomeCliente)
+  //Passo 2 : Busca no banco de dados
+  try {
+    // find() "método de busca" newRegex 'i' case insensitive
+    const dadosCliente = await clienteSchema.find({nomeCliente: new RegExp(nomeCliente, 'i')}) //Passo 2
+    console.log(dadosCliente) // Passo 3 (recebimento dos dados do cliente)
+    // UX -> se o cliente não estiver cadastrado, avisar o usuário e habilitar o cadastramento
+    if(dadosCliente.length === 0){
+        dialog.showMessageBox({
+            type: 'warning',
+            title: 'Aviso!',
+            message: 'Cliente não cadastrado.\nDeseja cadastrar este cliente',
+            buttons: ['Sim', 'Não'],
+            defaultId: 0
+        }).then((result) => {
+          if (result.response === 0) {
+            //setar o nome do cliente no form e habilitar o cadastramento
+            event.reply('name-client')
+          } else {
+              //limpar a caixa de busca
+              event.reply('clear-search')
+          }
+        })
+    } else {
+        //Passo 4 (enviar os dados do cliente ao renderizador)
+    }
+  } catch (error) {
+    console.log(error)
+  }
+})
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 //CRUD Update >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
