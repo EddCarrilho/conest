@@ -328,10 +328,10 @@ ipcMain.on('search-client', async (event, nomeCliente) => {
     if(dadosCliente.length === 0){
         dialog.showMessageBox({
             type: 'warning',
-            title: 'Aviso!',
+            title: 'Clientes',
             message: 'Cliente não cadastrado.\nDeseja cadastrar este cliente',
-            buttons: ['Sim', 'Não'],
-            defaultId: 0
+            defaultId: 0,
+            buttons: ['Sim', 'Não']
         }).then((result) => {
           if (result.response === 0) {
             //setar o nome do cliente no form e habilitar o cadastramento
@@ -343,6 +343,7 @@ ipcMain.on('search-client', async (event, nomeCliente) => {
         })
     } else {
         //Passo 4 (enviar os dados do cliente ao renderizador)
+        event.reply('data-client', JSON.stringify(dadosCliente))
     }
   } catch (error) {
     console.log(error)

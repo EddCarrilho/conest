@@ -44,6 +44,62 @@ formFornecedor.addEventListener('submit', async (event) => {
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 //CRUD Read >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// array(vetor) usado na renderização dos dados do fornecedor
+let arrayFornecedor = []
+
+// Função que vai enviar ao main um pedido de busca dos dados de um fornecedor pelo nome (Passo 1 - slide)
+function buscarFornecedor() {
+    let nomeFornecedor = document.getElementById('SearhFornecedor').value
+    //validação (UX)
+    if(nomeFornecedor === "") {
+        // validar campo obrigatório
+        api.infoSearchDialog()
+    } else {
+        // enviar o pedido de busca junto com o nome do fornecedor
+        api.searchFornecedor(nomeFornecedor)
+    }
+    // Foco no campo de busca (UX)
+    api.focusSearch((args) => {
+        document.getElementById('SearhFornecedor').focus()
+    })
+
+    // Setar o nome do cliente e habilitar o cadastramento
+    api.nameClient( async (args) => {
+        // Restaurar o comportamento padrão da tecla Enter
+        let setarNomeFornecedor = document.getElementById('SearhFornecedor').value
+        document.getElementById('inputName').value += setarNomeFornecedor
+        document.getElementById('SearhFornecedor').value = ""
+        document.getElementById('SearhFornecedor').blur()
+        document.getElementById('SearhFornecedor').disabled = true
+        document.getElementById('inputName').focus()
+        btnRead.disabled = true
+        btnCreate.disabled = false
+        btnUpdate.disabled = false
+        btnDelete.disabled = false
+    })
+    // limpar a caixa de busca e setar o foco
+    api.clearSearch(() => {
+        document.getElementById('SearhFornecedor').value = ""
+        document.getElementById('SearhFornecedor').focus()
+    })
+    // receber do main.js os dados do cliente (passo 4)
+    api.dataClient((event, dadosCliente) => {
+        arrayCliente = JSON.parse(dadosCliente)
+        console.log(arrayCliente)
+    // Passo 5 (final) percorre o array, extrair os dados e setar os campos de texto (caixas input) do formulário
+    arrayCliente.forEach((c) => {
+        document.getElementById('idfornecedor').value = c._id,
+        document.getElementById('inputName').value = c.nomeCliente,
+        document.getElementById('inputPhone').value = c.foneCliente,
+        document.getElementById('inputAddress').value = c.emailCliente
+        // limpar a caixa de busca (UX)
+        document.getElementById('inputSearch').value = ""
+        // ativar os botões update e delete
+        document.getElementById('btnUpdate').disabled = false
+        document.getElementById('btnDelete').disabled = false
+    })
+})
+}
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 //CRUD Update >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -51,3 +107,15 @@ formFornecedor.addEventListener('submit', async (event) => {
 
 //CRUD Delete >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+//Reset do formulário
+function resetForm() {
+    document.getElementById('inputSearch').focus() //foco no html
+    document.getElementById('inputSearch').disabled = false
+    btnCreate.disabled = true
+    btnUpdate.disabled = true
+    btnDelete.disabled = true
+    btnRead.disabled = false
+    // Função para remover o manipulador de ventos da tecla Enter
+    document.getElementById("frmCliente").addEventListener("keydown", teclaEnter)
+}
