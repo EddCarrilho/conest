@@ -15,10 +15,10 @@
 
         <form class="row g-3" id="frmFornecedor">
             <div class="col-md-6">
-                <input type="text" class="form-control" id="SearhFornecedor" maxlength="30" spellcheck="false" placeholder="Fornecedor" required>
+                <input type="text" class="form-control" id="SearchFornecedor" maxlength="30" spellcheck="false" placeholder="Fornecedor" required>
             </div>
             <div class="col-md-4">
-                <button type="button" class="btn btn-dark" id="btnRead">Buscar</button>
+                <button type="button" class="btn btn-dark" id="btnRead" onclick="buscarFornecedor()">Buscar</button>
             </div>
             <hr class="border border-dark border-1 opacity-75">
         </form>
@@ -118,9 +118,9 @@
              <div class="col-12">
                 <br>
                 <button type="submit" class="btn btn-success" id="btnCreate">Adicionar</button>
-                <button type="submit" class="btn btn-warning" id="btnUpdate">Editar</button>
-                <button type="button" class="btn btn-danger" id="btnDelete">Excluir</button>
-                <button type="reset" class="btn" id="btnReset"></button>
+                <button type="button" class="btn btn-warning" id="btnUpdate" onclick="editarFornecedor()">Editar</button>
+                <button type="button" class="btn btn-danger" id="btnDelete" onclick="excluirFornecedor()">Excluir</button>
+                <button type="reset" class="btn" id="btnReset" onclick="resetForm()"></button>
             </div>
 
         </form>

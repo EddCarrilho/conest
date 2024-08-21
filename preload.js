@@ -17,7 +17,15 @@ contextBridge.exposeInMainWorld('api', {
     searchClient: (nomeCliente) => ipcRenderer.send('search-client', nomeCliente),
     nameClient: (args) => ipcRenderer.on('name-client', args),
     clearSearch: (args) => ipcRenderer.on('clear-search', args),
-    dataClient: (dadosCliente) => ipcRenderer.on('data-client', dadosCliente)
+    dataClient: (dadosCliente) => ipcRenderer.on('data-client', dadosCliente),
+    resetForm: (args) => ipcRenderer.on('reset-form', args),
+    updateClient: (cliente) => ipcRenderer.send('update-client', cliente),
+    deleteClient: (idCli) => ipcRenderer.send('delete-client', idCli),
+    dataFornecedor: (dadosFornecedor) => ipcRenderer.on('data-fornecedor', dadosFornecedor),
+    searchFornecedor: (nomeFornecedor) => ipcRenderer.send('search-fornecedor', nomeFornecedor),
+    nameFornecedor: (args) => ipcRenderer.on('name-fornecedor', args),
+    updateFornecedor: (fornecedor) => ipcRenderer.send('update-fornecedor', fornecedor),
+    deleteFornecedor: (idForn) => ipcRenderer.send('delete-fornecedor', idForn)
 })
 
 // status de conexão (verificar se o banco de dados está conectado)

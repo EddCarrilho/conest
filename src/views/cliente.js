@@ -25,6 +25,7 @@ document.getElementById('frmCliente').addEventListener('keydown', teclaEnter)
 
 //CRUD Create >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 //captura dos inputs do formulário (passo 1 - slides)
+let idCliente = document.getElementById('inputId')
 let  formCliente  = document.getElementById('frmCliente')
 let nomeCliente = document.getElementById('inputName')
 let foneCliente = document.getElementById('inputPhone')
@@ -32,7 +33,7 @@ let emailCliente = document.getElementById('inputAddress')
 //evento relacionado ao botão adicionar (ainda passo 1 - slide)
 formCliente.addEventListener('submit', async (event) => {
     event.preventDefault()
-    console.log(nomeCliente.value, foneCliente.value, emailCliente.value)
+    console.log(nomeCliente.value, foneCliente.value, emailCliente.value, idCliente)
     //Empacotar os dados em um objeto e enviar ao main.js (passo2 - slide)
     const cliente = {
         nomeCli: nomeCliente.value,
@@ -67,7 +68,7 @@ function buscarCliente() {
     })
 
     // Setar o nome do cliente e habilitar o cadastramento
-    api.nameClient( async (args) => {
+    api.nameClient((args) => {
         // Restaurar o comportamento padrão da tecla Enter
         let setarNomeCliente = document.getElementById('inputSearch').value
         document.getElementById('inputName').value += setarNomeCliente
@@ -75,6 +76,11 @@ function buscarCliente() {
         document.getElementById('inputSearch').blur()
         document.getElementById('inputSearch').disabled = true
         document.getElementById('inputName').focus()
+        // Limpar os campos para um novo cadastro
+        document.getElementById('inputName').value = ""
+        document.getElementById('inputPhone').value = ""
+        document.getElementById('inputAddress').value = ""
+        document.getElementById('inputId').value = ""
         btnRead.disabled = true
         btnCreate.disabled = false
         btnUpdate.disabled = false
@@ -106,10 +112,32 @@ function buscarCliente() {
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 //CRUD Update >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+function editarCliente() {
+    const cliente = {
+        idCli: idCliente.value,
+        nomeCli: nomeCliente.value,
+        foneCli: foneCliente.value,
+        emailCli: emailCliente.value
+    }
+    console.log(cliente)
+    // Enviar o objeto fornecedor ao main.js
+    api.updateClient(cliente)
+}
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 //CRUD Delete >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+function excluirCliente() {
+    let idCli = idCliente.value
+    console.log(idCli)
+    // Envio do id ao main.js
+    api.deleteClient(idCli)
+}
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+api.resetForm((args)=>{
+    resetForm()
+    formCliente.reset()
+})
 
 //Reset do formulário
 function resetForm() {

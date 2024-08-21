@@ -305,7 +305,7 @@ ipcMain.on('new-fornecedor', async (event, fornecedor) => {
 })
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-//CRUD Read >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//CRUD Read Cliente >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 // Aviso (Busca: Preenchimento )
 ipcMain.on('dialog-infoSearchDialog', (event) => {
   dialog.showMessageBox ({
@@ -351,8 +351,191 @@ ipcMain.on('search-client', async (event, nomeCliente) => {
 })
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-//CRUD Update >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+//CRUD Read Fornecedor >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+// Aviso (Busca: Preenchimento )
+ipcMain.on('dialog-infoSearchDialog', (event) => {
+  dialog.showMessageBox ({
+    type: 'warning',
+    title: 'Atenção!',
+    message: 'Preencha o nome do fornecedor',
+    buttons: ['OK']
+  })
+  event.reply('focus-search')
+})
+// Recebimento do pedido de busca de um cliente pelo nome (Passo 1)
+ipcMain.on('search-fornecedor', async (event, razaoSFornecedor) => {
+  console.log(razaoSFornecedor)
+  //Passo 2 : Busca no banco de dados
+  try {
+    // find() "método de busca" newRegex 'i' case insensitive
+    const dadosFornecedor = await fornecedorSchema.find({razaoSFornecedor: new RegExp(razaoSFornecedor, 'i')}) //Passo 2
+    console.log(dadosFornecedor) // Passo 3 (recebimento dos dados do cliente)
+    // UX -> se o cliente não estiver cadastrado, avisar o usuário e habilitar o cadastramento
+    if(dadosFornecedor.length === 0){
+        dialog.showMessageBox({
+            type: 'warning',
+            title: 'Fornecedor',
+            message: 'Fornecedor não cadastrado.\nDeseja cadastrar este Fornecedor',
+            defaultId: 0,
+            buttons: ['Sim', 'Não']
+        }).then((result) => {
+          if (result.response === 0) {
+            //setar o nome do cliente no form e habilitar o cadastramento
+            event.reply('name-fornecedor')
+          } else {
+              //limpar a caixa de busca
+              event.reply('clear-search')
+          }
+        })
+    } else {
+        //Passo 4 (enviar os dados do cliente ao renderizador)
+        event.reply('data-fornecedor', JSON.stringify(dadosFornecedor))
+    }
+  } catch (error) {
+    console.log(error)
+  }
+})
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
-//CRUD Delete >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+//CRUD Update Cliente >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ipcMain.on('update-client', async (event, cliente) => {
+  console.log(cliente)
+  try {
+      // Extração dos dados do objeto
+      const clienteEditado = await clienteSchema.findByIdAndUpdate(
+          cliente.idCli, {
+          nomeCliente: cliente.nomeCli,
+          foneCliente: cliente.foneCli,
+          emailCliente: cliente.emailCli
+      },
+          {
+              new: true
+          }
+      )
+      console.log(cliente)
+      dialog.showMessageBox({
+          type: 'info',
+          title: "Aviso",
+          message: "Cliente atualizado com sucesso",
+          buttons: ['Ok']
+      })
+      event.reply('reset-form')
+  } catch (error) {
+      console.log(error)
+  }
+})
+// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+// CRUD Update Fornecedor
+ipcMain.on('update-fornecedor', async (event, fornecedor) => {
+  if(fornecedor.razaoSFor === "" ||
+  fornecedor.CNPJFor === "" ||
+  fornecedor.foneFor === "" ||
+  fornecedor.emailFor === "" ||
+  fornecedor.CEPFor === "" ||
+  fornecedor.ruaFor === "" ||
+  fornecedor.numeroFor === "" ||
+  fornecedor.bairroFor === "" ||
+  fornecedor.cidadeFor === "" ||
+  fornecedor.UFFor === ""
+  ){
+      dialog.showMessageBox({
+          type:'error',
+          title: "Atenção!",
+          message: "Preencha os campos vazios"
+      })
+      return
+  }
+  console.log(fornecedor)
+  try {
+      // Extração dos dados do objeto
+      const fornecedorEditado = await fornecedorSchema.findByIdAndUpdate(
+          fornecedor.idFor, {
+            razaoSFornecedor: fornecedor.razaoSFor,
+            CNPJFornecedor: fornecedor.CNPJFor,
+            emailFornecedor: fornecedor.emailFor,
+            foneFornecedor: fornecedor.foneFor,
+            CEPFornecedor: fornecedor.CEPFor,
+            ruaFornecedor: fornecedor.ruaFor,
+            bairroFornecedor: fornecedor.bairroFor,
+            numeroFornecedor: fornecedor.numeroFor,
+            compleFornecedor: fornecedor.compleFor,
+            cidadeFornecedor: fornecedor.cidadeFor,
+            UFFornecedor: fornecedor.UFFor
+          },
+          {
+              new: true
+          }
+      )
+      dialog.showMessageBox({
+          type: 'info',
+          title: "Aviso",
+          message: "Fornecedor atualizado com sucesso",
+          buttons: ['Ok']
+      })
+      event.reply('reset-form')
+  } catch (error) {
+      console.log(error)
+  }
+})
+// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+// CRUD Cliente Delete
+ipcMain.on('delete-client', (event, idCli) => {
+  console.log(idCli)
+  // Confirmação da ação antes de excluir
+  dialog.showMessageBox({
+      type: 'error',
+      title: "Atenção!",
+      message: "Deseja excluir este cliente? Essa é uma ação irreversível",
+      buttons: ['Sim', 'Não'],
+      defaultId: 0
+  }).then(async (result) => {
+      if (result.response === 0) {
+          try {
+              await clienteSchema.findByIdAndDelete(idCli)
+              dialog.showMessageBox({
+                  type: 'info',
+                  title: "Aviso",
+                  message: "Cliente excluído com sucesso",
+                  buttons: ['Ok']
+              })
+              event.reply('reset-form')
+          } catch (error) {
+              console.log(error)
+          }
+      }
+  })
+}
+)
+// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+// CRUD Fornecedor Delete >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+ipcMain.on('delete-fornecedor', (event, idForn) => {
+  console.log(idForn)
+  // Confirmação da ação antes de excluir
+  dialog.showMessageBox({
+      type: 'error',
+      title: "Atenção!",
+      message: "Deseja excluir este fornecedor? Essa é uma ação irreversível",
+      buttons: ['Sim', 'Não'],
+      defaultId: 0
+  }).then(async (result) => {
+      if (result.response === 0) {
+          try {
+              await fornecedorSchema.findByIdAndDelete(idForn)
+              dialog.showMessageBox({
+                  type: 'info',
+                  title: "Aviso",
+                  message: "Fornecedor excluído com sucesso",
+                  buttons: ['Ok']
+              })
+              event.reply('reset-form')
+          } catch (error) {
+              console.log(error)
+          }
+      }
+  })
+}
+)
+// <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
